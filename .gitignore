@@ -1,0 +1,6 @@
+node_modules
+Log.txt
+quick.db
+quick.db-shm
+quick.db-wal
+package-lock.json
