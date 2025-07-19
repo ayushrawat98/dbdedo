@@ -10,7 +10,7 @@ const router = Router()
 router.get('/site/count', DBController.getRequestCount)
 
 //create table with provided uuid
-router.get('/site/create', slowDown(50000), DBController.createTable)
+router.get('/site/create', slowDown(300000), DBController.createTable)
 
 //TABLE REQUESTS
 
