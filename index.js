@@ -13,7 +13,7 @@ app.use(express.json({limit : '3kb'}))
 app.use(Logger)
 
 //routes
-app.use("/api", DBRouter)
+app.use("", DBRouter)
 
 //error handler
 app.use((err, req, res, next) => {
