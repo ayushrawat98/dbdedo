@@ -73,8 +73,8 @@ class SQL {
         )
     }
 
-    getData(tablename) {
-        return this.db.prepare(`SELECT id, data FROM userdata where tablename = ? limit 50 offset 0`).all(tablename);
+    getData(tablename, limit, offset) {
+        return this.db.prepare(`SELECT id, data FROM userdata where tablename = ? limit ? offset ?`).all(tablename, limit, offset);
     }
 
     getDataById(tablename, id) {

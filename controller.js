@@ -1,5 +1,6 @@
 import DB from "./db.js"
 import {v4 as uuidv4} from 'uuid'
+import is_number from "is-number"
 
 export async function getRequestCount(req, res, next){
     const count = {
@@ -19,7 +20,15 @@ export async function createTable(req, res, next){
 
 export async function getData(req, res, next){
     DB.setRequestCount()
-    const data = DB.getData(req.params.table)
+    let limit = Number(req.query.limit)
+    let offset = Number(req.query.offset)
+    if(!limit || limit > 50 || limit < 0 || !is_number(limit)){
+        limit = 50
+    }
+    if(!offset || offset < 0 || !is_number(offset)){
+        offset = 0
+    }
+    const data = DB.getData(req.params.table, limit, offset)
     let result = []
     if(data){
         result = data.map(x => ({...x, data : JSON.parse(x.data)}))
