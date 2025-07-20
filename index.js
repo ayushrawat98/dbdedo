@@ -9,7 +9,7 @@ const app = express()
 
 //middleware
 app.use(cors())
-app.use(express.json({limit : '3kb'}))
+app.use(express.json({limit : '5kb'}))
 app.use(Logger)
 
 //routes
