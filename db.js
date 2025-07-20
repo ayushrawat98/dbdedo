@@ -16,7 +16,8 @@ class SQL {
                 create table if not exists userdata (
                     id integer primary key autoincrement,
                     tablename text,
-                    data text
+                    data text,
+                    created_at text
                 );
 
                 CREATE INDEX IF NOT EXISTS idx_userdata ON userdata(tablename);
@@ -73,16 +74,16 @@ class SQL {
         )
     }
 
-    getData(tablename, limit, offset) {
-        return this.db.prepare(`SELECT id, data FROM userdata where tablename = ? limit ? offset ?`).all(tablename, limit, offset);
+    getData(tablename, limit, offset, order) {
+        return this.db.prepare(`SELECT id, data FROM userdata where tablename = ? order by created_at ${order} limit ? offset ? `).all(tablename, limit, offset);
     }
 
     getDataById(tablename, id) {
         return this.db.prepare(`SELECT id, data FROM userdata where id = ? and tablename = ?`).get(id, tablename)
     }
 
-    insertData(tablename, data) {
-        return this.db.prepare(`INSERT INTO userdata (data, tablename) VALUES (?, ?)`).run(data, tablename);
+    insertData(tablename, data, created_at) {
+        return this.db.prepare(`INSERT INTO userdata (data, tablename, created_at) VALUES (?, ?, ?)`).run(data, tablename, created_at);
     }
 
     putPatchData(tablename, data, id) {
