@@ -1,4 +1,5 @@
 import fs from "fs"
+import ipLib from "request-ip"
 
 export function Logger(req, res, next) {
     let log = JSON.stringify({
@@ -16,19 +17,20 @@ const spammerlist = {}
 export function slowDown(time) {
 
     return (req, res, next) => {
-        if (!spammerlist[req.ip]) {
-            spammerlist[req.ip] = Date.now()
+        const ip = ipLib.getClientIp(req)
+        if (!spammerlist[ip]) {
+            spammerlist[ip] = Date.now()
             return next()
         }
 
         //if spamming , pause for a 5 second
         //else remove from list and move to next middleware
-        const timeleft = Date.now() - spammerlist[req.ip]
+        const timeleft = Date.now() - spammerlist[ip]
         if (timeleft < time) {
-            spammerlist[req.ip] = Date.now()
+            spammerlist[ip] = Date.now()
             return res.status(403).json("Wait " + Math.trunc(timeleft/1000) + " seconds")
         } else {
-            delete spammerlist[req.ip]
+            delete spammerlist[ip]
             return next()
         }
     }
